@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'geo',
     'phonenumber_field',
+    'geo.apps.GeoConfig',
 ]
 
 MIDDLEWARE = [
