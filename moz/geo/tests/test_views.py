@@ -1,5 +1,6 @@
 from django.contrib.gis.geos import Polygon
 from django.test import TestCase
+from djmoney.money import Money
 
 from geo.models import Provider, ServiceArea
 
@@ -51,7 +52,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
-        self.assertEqual(data['currency'], Provider.US_DOLLAR)
+        self.assertEqual(data['currency'], 'USD')
         self.assertEqual(data['service_areas'], [])
 
     def test_get_all(self):
@@ -65,7 +66,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
-        self.assertEqual(data['currency'], Provider.US_DOLLAR)
+        self.assertEqual(data['currency'], 'USD')
         self.assertEqual(data['service_areas'], [])
 
     def test_get_single(self):
@@ -79,7 +80,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
-        self.assertEqual(data['currency'], Provider.US_DOLLAR)
+        self.assertEqual(data['currency'], 'USD')
         self.assertEqual(data['service_areas'], [])
 
     def test_put(self):
@@ -92,7 +93,7 @@ class ProviderTests(TestCase):
                 'email': 'example1@example.com',
                 'phone_number': '+41524204288',
                 'language': 'it',
-                'currency': provider.CANADIAN_DOLLAR,
+                'currency': 'CAD',
             },
             content_type='application/json'
         )
@@ -103,7 +104,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example1@example.com')
         self.assertEqual(data['phone_number'], '+41524204288')
         self.assertEqual(data['language'], 'it')
-        self.assertEqual(data['currency'], provider.CANADIAN_DOLLAR)
+        self.assertEqual(data['currency'], 'CAD')
         self.assertEqual(data['service_areas'], [])
 
     def test_delete(self):
@@ -132,7 +133,7 @@ class ServiceAreaTests(TestCase):
     def make_service_area(self, coords=None):
         coords = coords or self.coords
         return ServiceArea.objects.create(
-            provider=self.provider, name='area1',
+            provider=self.provider, name='area1', price=Money(10, 'USD'),
             area=str(Polygon(coords))
         )
 
@@ -149,6 +150,8 @@ class ServiceAreaTests(TestCase):
                 'provider': self.provider.id,
                 'name': 'area1',
                 'area': str(Polygon(self.coords)),
+                'price': 20,
+                'price_currency': 'USD',
             }
         )
 
@@ -156,6 +159,8 @@ class ServiceAreaTests(TestCase):
         data = response.data
         self.assertEqual(data['provider'], self.provider.get_absolute_url())
         self.assertEqual(data['name'], 'area1')
+        self.assertEqual(data['price'], '20.00')
+        self.assertEqual(data['price_currency'], 'USD')
         geo_json_dict = data['area']
         self.assertEqual(geo_json_dict['type'], 'Polygon')
         self.assertEqual(geo_json_dict['coordinates'][0], self.coords)

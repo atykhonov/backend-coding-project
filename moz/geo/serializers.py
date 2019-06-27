@@ -23,7 +23,7 @@ class ServiceAreaSerializer(GeoModelSerializer):
     class Meta:
         model = ServiceArea
         geo_field = 'area'
-        fields = ('id', 'provider', 'name', 'area')
+        fields = ('id', 'provider', 'name', 'price', 'price_currency', 'area')
 
     def to_representation(self, instance):
         representation = super(

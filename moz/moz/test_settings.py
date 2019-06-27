@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'geo.apps.GeoConfig',
     'rest_framework',
     'rest_framework_gis',
+    'djmoney',
 ]
 
 DATABASES = {

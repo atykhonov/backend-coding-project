@@ -5,3 +5,4 @@ django-language-field==0.0.3
 djangorestframework==3.9.4
 djangorestframework-gis==0.14
 psycopg2==2.8.3
+django-money==0.15
