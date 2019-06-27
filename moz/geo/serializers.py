@@ -3,18 +3,6 @@ from rest_framework import serializers
 from rest_framework_gis.serializers import GeoModelSerializer
 
 
-class ServiceAreaSerializer(GeoModelSerializer):
-    provider = serializers.HyperlinkedRelatedField(
-        queryset=Provider.objects.all(), lookup_field='pk',
-        view_name='v1:provider-detail'
-    )
-
-    class Meta:
-        model = ServiceArea
-        geo_field = 'area'
-        fields = ('id', 'provider', 'name', 'area')
-
-
 class ProviderSerializer(serializers.HyperlinkedModelSerializer):
     service_areas = serializers.HyperlinkedRelatedField(
         many=True,
@@ -26,3 +14,18 @@ class ProviderSerializer(serializers.HyperlinkedModelSerializer):
         model = Provider
         fields = (
             'id', 'name', 'email', 'phone_number', 'language', 'service_areas')
+
+
+class ServiceAreaSerializer(GeoModelSerializer):
+
+    class Meta:
+        model = ServiceArea
+        geo_field = 'area'
+        fields = ('id', 'provider', 'name', 'area')
+
+    def to_representation(self, instance):
+        representation = super(
+            ServiceAreaSerializer, self).to_representation(instance)
+        representation['provider'] = '/api/v1/providers/{}/'.format(
+            instance.provider.id)
+        return representation

@@ -35,5 +35,5 @@ class ServiceAreaViewSet(viewsets.ModelViewSet):
         lng = params.get('lng', None)
         if lat and lng:
             queryset = queryset.filter(
-                area__contains=Point(int(lat), int(lng)))
+                area__contains=Point(float(lat), float(lng)))
         return queryset
