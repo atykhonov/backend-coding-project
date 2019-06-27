@@ -1,5 +1,4 @@
-from django.db import models
-from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.db import models as models
 from languages.fields import LanguageField
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -12,6 +11,7 @@ class Provider(models.Model):
 
 
 class ServiceArea(models.Model):
-    provider = Provider()
+    provider = models.ForeignKey(
+        Provider, related_name='service_areas', on_delete=models.CASCADE)
     name = models.CharField(null=False, blank=False, max_length=100)
-    area = gis_models.PolygonField()
+    area = models.PolygonField()

@@ -3,3 +3,5 @@ django-phonenumber-field==3.0.1
 phonenumbers==8.10.14
 django-language-field==0.0.3
 djangorestframework==3.9.4
+djangorestframework-gis==0.14
+psycopg2==2.8.3
