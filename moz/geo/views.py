@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import Point
 from geo.models import Provider, ServiceArea
 from geo.serializers import ProviderSerializer, ServiceAreaSerializer
 from rest_framework import viewsets
@@ -34,5 +35,5 @@ class ServiceAreaViewSet(viewsets.ModelViewSet):
         lng = params.get('lng', None)
         if lat and lng:
             queryset = queryset.filter(
-                area__contains='POINT({} {})'.format(lat, lng))
+                area__contains=Point(int(lat), int(lng)))
         return queryset
