@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'languages',
     'geo.apps.GeoConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
