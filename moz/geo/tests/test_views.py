@@ -51,6 +51,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
+        self.assertEqual(data['currency'], Provider.US_DOLLAR)
         self.assertEqual(data['service_areas'], [])
 
     def test_get_all(self):
@@ -64,6 +65,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
+        self.assertEqual(data['currency'], Provider.US_DOLLAR)
         self.assertEqual(data['service_areas'], [])
 
     def test_get_single(self):
@@ -77,6 +79,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example@example.com')
         self.assertEqual(data['phone_number'], '+41524204242')
         self.assertEqual(data['language'], 'uk')
+        self.assertEqual(data['currency'], Provider.US_DOLLAR)
         self.assertEqual(data['service_areas'], [])
 
     def test_put(self):
@@ -89,6 +92,7 @@ class ProviderTests(TestCase):
                 'email': 'example1@example.com',
                 'phone_number': '+41524204288',
                 'language': 'it',
+                'currency': provider.CANADIAN_DOLLAR,
             },
             content_type='application/json'
         )
@@ -99,6 +103,7 @@ class ProviderTests(TestCase):
         self.assertEqual(data['email'], 'example1@example.com')
         self.assertEqual(data['phone_number'], '+41524204288')
         self.assertEqual(data['language'], 'it')
+        self.assertEqual(data['currency'], provider.CANADIAN_DOLLAR)
         self.assertEqual(data['service_areas'], [])
 
     def test_delete(self):

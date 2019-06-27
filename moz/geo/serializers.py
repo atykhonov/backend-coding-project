@@ -13,7 +13,9 @@ class ProviderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Provider
         fields = (
-            'id', 'name', 'email', 'phone_number', 'language', 'service_areas')
+            'id', 'name', 'email', 'phone_number', 'language', 'currency',
+            'service_areas'
+        )
 
 
 class ServiceAreaSerializer(GeoModelSerializer):
