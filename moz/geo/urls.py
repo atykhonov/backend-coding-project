@@ -10,5 +10,5 @@ router.register(
     r'service-areas', views.ServiceAreaViewSet, base_name='serviceareas')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('v1/', include((router.urls, 'api_v1'), namespace='v1')),
 ]

@@ -6,7 +6,7 @@ from rest_framework_gis.serializers import GeoModelSerializer
 class ServiceAreaSerializer(GeoModelSerializer):
     provider = serializers.HyperlinkedRelatedField(
         queryset=Provider.objects.all(), lookup_field='pk',
-        view_name='provider-detail'
+        view_name='v1:provider-detail'
     )
 
     class Meta:
@@ -19,7 +19,7 @@ class ProviderSerializer(serializers.HyperlinkedModelSerializer):
     service_areas = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='serviceareas-detail',
+        view_name='v1:serviceareas-detail',
     )
 
     class Meta:
