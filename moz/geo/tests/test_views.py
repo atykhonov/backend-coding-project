@@ -1,6 +1,5 @@
 from django.contrib.gis.geos import Polygon
 from django.test import TestCase
-from rest_framework_gis.fields import GeoJsonDict
 
 from geo.models import Provider, ServiceArea
 
