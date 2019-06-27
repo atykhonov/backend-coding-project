@@ -1,9 +1,5 @@
 [flake8]
 exclude =
-    .env,
-    env,
-    .venv,
-    venv,
     .git,
-    moz/geo/migrations/,
-    moz/moz/settings.py,
+    ./moz/geo/migrations/*,
+    ./moz/moz/settings.py,
