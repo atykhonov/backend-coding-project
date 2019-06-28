@@ -1,4 +1,4 @@
-# Mozio Backend Potential hire Project 2.0
+# Mozio Backend REST API
 
 ## Requirements
 
