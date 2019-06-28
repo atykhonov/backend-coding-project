@@ -7,6 +7,21 @@ from rest_framework import viewsets
 class ProviderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows providers to be viewed or edited.
+
+    retrieve:
+    Return the given provider.
+
+    list:
+    Return a list of all the existing providers.
+
+    create:
+    Create a new provider instance.
+
+    update:
+    Update the given provider.
+
+    delete:
+    Delete the given provider.
     """
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
@@ -15,6 +30,21 @@ class ProviderViewSet(viewsets.ModelViewSet):
 class ServiceAreaViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows service areas to be viewed or edited.
+
+    retrieve:
+    Return the given service area.
+
+    list:
+    Return a list of all the existing service areas.
+
+    create:
+    Create a new service area instance.
+
+    update:
+    Update the given service area.
+
+    delete:
+    Delete the given service area.
     """
 
     serializer_class = ServiceAreaSerializer

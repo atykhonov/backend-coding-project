@@ -1,9 +1,33 @@
 from django.conf.urls import include, url
-from django.views.generic.base import RedirectView
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Geo API",
+      default_version='v1',
+      description="Mozio Backend REST API",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="atykhonov@gmail.com"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     url(r'api/', include('geo.urls')),
-    url(r'^.*$', RedirectView.as_view(
-        url='/api/v1', permanent=False), name='index')
+    url(
+       r'^swagger(?P<format>\.json|\.yaml)$',
+       schema_view.without_ui(cache_timeout=0), name='schema-json'
+    ),
+    url(
+        r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui'
+    ),
+    url(
+        r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'
+    ),
 ]

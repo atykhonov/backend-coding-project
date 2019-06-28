@@ -8,12 +8,6 @@ from geo.models import Provider, ServiceArea
 
 class GenericTests(TestCase):
 
-    def test_root_redirect(self):
-        response = self.client.get('/')
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/api/v1')
-
     def test_root_has_endpoints_to_explore_api(self):
         response = self.client.get('/api/v1/')
 
