@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'djmoney',
+    'djmoney.contrib.exchange',
 ]
 
 DATABASES = {
@@ -31,3 +32,5 @@ DATABASES = {
         }
     }
 }
+
+EXCHANGE_BACKEND = 'moz.utils.TestExchangeBackend'

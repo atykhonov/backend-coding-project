@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'djmoney',
+    'djmoney.contrib.exchange',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Django money exchange rates configuration
+
+EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
+FIXER_URL = 'http://data.fixer.io/api/2013-12-24?symbols=EUR,CAD'
+FIXER_ACCESS_KEY = 'fixer-access-key'
 
 try:
     from moz.local_settings import *  # noqa: F401, F403

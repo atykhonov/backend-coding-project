@@ -1,5 +1,6 @@
 from django.contrib.gis.geos import Polygon
 from django.test import TestCase
+from djmoney.contrib.exchange.models import ExchangeBackend, Rate
 from djmoney.money import Money
 
 from geo.models import Provider, ServiceArea
@@ -121,6 +122,9 @@ class ProviderTests(TestCase):
 class ServiceAreaTests(TestCase):
 
     def setUp(self):
+        backend = ExchangeBackend.objects.create(name='test')
+        Rate.objects.create(currency='CAD', value=1.5, backend=backend)
+        Rate.objects.create(currency='USD', value=1.0, backend=backend)
         self.provider = Provider.objects.create(
             name='example', email='example@example.com',
             phone_number='+41524204242', language='it'
@@ -159,7 +163,7 @@ class ServiceAreaTests(TestCase):
         data = response.data
         self.assertEqual(data['provider'], self.provider.get_absolute_url())
         self.assertEqual(data['name'], 'area1')
-        self.assertEqual(data['price'], '20.00')
+        self.assertEqual(data['price'], 20.00)
         self.assertEqual(data['price_currency'], 'USD')
         geo_json_dict = data['area']
         self.assertEqual(geo_json_dict['type'], 'Polygon')
@@ -205,6 +209,8 @@ class ServiceAreaTests(TestCase):
                 'provider': self.provider.id,
                 'name': 'area2',
                 'area': str(Polygon(coords)),
+                'price': 30.00,
+                'price_currency': 'USD',
             },
             content_type='application/json'
         )
@@ -212,6 +218,8 @@ class ServiceAreaTests(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.data
         self.assertEqual(data['name'], 'area2')
+        self.assertEqual(data['price'], 30.00)
+        self.assertEqual(data['price_currency'], 'USD')
         geo_json_dict = data['area']
         self.assertEqual(geo_json_dict['type'], 'Polygon')
         self.assertEqual(geo_json_dict['coordinates'][0], coords)
@@ -303,3 +311,32 @@ class ServiceAreaTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data[0]['id'], service_area1.id)
         self.assertEqual(response.data[1]['id'], service_area2.id)
+
+    def test_default_price_and_currency(self):
+        service_area = self.make_service_area()
+
+        response = self.client.get(service_area.get_absolute_url())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['price'], 10.00)
+        self.assertEqual(response.data['price_currency'], 'USD')
+
+    def test_changed_price_when_currency_is_changed(self):
+        service_area = self.make_service_area()
+        response = self.client.put(
+            self.provider.get_absolute_url(),
+            {
+                'name': 'example',
+                'email': 'example@example.com',
+                'phone_number': '+41524204288',
+                'language': 'it',
+                'currency': 'CAD',
+            },
+            content_type='application/json'
+        )
+
+        response = self.client.get(service_area.get_absolute_url())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['price'], 15.00)
+        self.assertEqual(response.data['price_currency'], 'CAD')
